@@ -10,12 +10,14 @@ namespace MultiplayerTicTacToe.Model
     public class Client
     {
         //Creates HubConnection using URL of SignalR hub on server
-        private HubConnection connection;
+        public HubConnection connection;
         private int playerNumber;
+        private string ip = "localhost";
+        private string port = "3000";
 
         public Client()
         {
-            connection = new HubConnectionBuilder().WithUrl("http://<Insert my server IP>/SignalRHub").Build();
+            connection = new HubConnectionBuilder().WithUrl("http://" + ip + ":" + port + "/PlayerPage").WithAutomaticReconnect().Build();
             //Event handler for PlayerNumber that is sent from server
             connection.On<int>("PlayerNumber", (number) =>
             {
@@ -26,12 +28,20 @@ namespace MultiplayerTicTacToe.Model
             connection.On("GameStarted", () =>
             {
                 //TODO: Start game
+                Console.WriteLine("Game has started");
+
+                //Game board
+                TicTacToe ticTacToe = new TicTacToe();
+                ticTacToe.ResetBoard();
+                ticTacToe.StartGame();
+                
+                
             });
 
             //Event handler for GameFull sent from server
             connection.On("GameFull", () =>
             {
-                //Display message that game is full
+                Console.WriteLine("Full"); //TODO: Make a popup
             });
 
             //Event handler for MovePlayed sent from server
@@ -44,7 +54,6 @@ namespace MultiplayerTicTacToe.Model
 
         /// <summary>
         /// Send message to server saying client wants to connect to player 1
-        /// 
         /// </summary>
         /// <returns>Assigns the connection ID of client to player 1 if player slot is empty</returns>
         public async Task ConnectToPlayer1()

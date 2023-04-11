@@ -11,8 +11,5 @@ public partial class GamePage : ContentPage
 		BindingContext = vm;
 	}
 
-    public GamePage(string playerName)
-    {
-        this.playerName = playerName;
-    }
+    
 }

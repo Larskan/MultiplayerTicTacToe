@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using MultiplayerTicTacToe.View;
+using MultiplayerTicTacToe.ViewModel;
 
 namespace MultiplayerTicTacToe;
 
@@ -15,9 +17,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-#if DEBUG
-		builder.Logging.AddDebug();
-#endif
+		builder.Services.AddSingleton<GamePageVM>();
+		builder.Services.AddSingleton<HiscorePageVM>();
+		builder.Services.AddSingleton<PlayerPageVM>();
+
+		builder.Services.AddTransient<GamePage>();
+		builder.Services.AddTransient<HiScorePage>();
+		builder.Services.AddTransient<PlayerPage>();
 
 		return builder.Build();
 	}

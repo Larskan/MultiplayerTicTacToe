@@ -13,7 +13,7 @@ namespace MultiplayerTicTacToe.ViewModel
         public ObservableCollection<Hiscore> Hiscores { get; }
         public HiscorePageVM()
         {
-            //Initialize the collection with some dummy data
+            //Initialize the collection with some dummy data so I can see if it works
             Hiscores = new ObservableCollection<Hiscore>
             {
                 new Hiscore {PlayerName = "Lars", Score = 10},

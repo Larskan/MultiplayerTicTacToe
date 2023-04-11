@@ -17,6 +17,9 @@ namespace MultiplayerTicTacToe.Model
         private GameState _currentState;
         private List<(string, int)> _highscores = new List<(string, int)> ();
 
+        /// <summary>
+        /// For calling the entire Class from other classes, it is default
+        /// </summary>
         public TicTacToe()
         {
             ResetBoard();
@@ -27,6 +30,10 @@ namespace MultiplayerTicTacToe.Model
 
         }
 
+        /// <summary>
+        /// Sets all cells to be empty
+        /// Iterates through all rows and columns and makes them empty
+        /// </summary>
         public void ResetBoard()
         {
             for (int row = 0; row < 3; row++)
@@ -38,33 +45,49 @@ namespace MultiplayerTicTacToe.Model
             }
         }
 
+        /// <summary>
+        /// Starts the game
+        /// </summary>
         public void StartGame()
         {
+            //If there is for some reason random cells filled, it resets the entire thing first
             ResetBoard();
-            _currentPlayer = 'X';
-            _currentState = GameState.InProgress;
+            _currentPlayer = 'X'; //X goes first, because I say so
+            _currentState = GameState.InProgress; //Update GameState so it is in progress
         }
 
+        /// <summary>
+        /// The gameplay itself
+        /// </summary>
+        /// <param name="row">Grid</param>
+        /// <param name="column">Grid</param>
+        /// <exception cref="ArgumentException">Error handling</exception>
         public void PlayMove(int row, int column)
         {
+            //Checks if game has stopped for some reason
             if(_currentState != GameState.InProgress)
             {
                 return;
             }
 
+            //If the O and X for some reason are outside the board
             if(row < 0 || row >= 3 || column < 0 || column >= 3)
             {
                 throw new ArgumentException("Invalid Move: Out of bounds");
             }
 
+            //Checks if the cell you want to place your X in already has something in it
             if (_board[row,column] != CellState.Empty)
             {
                 return;
             }
 
-            
+            //If none of the errors happen: Updates game board by setting the cell at specified row/col to X or O depending on turn
+            //Whose turn is tracked with the _currentPlayer
             _board[row, column] = _currentPlayer == 'X' ? CellState.X : CellState.O;
+            //If someone wins, _currentState will be updated to show XWin, OWin or Tie.
             CheckForWinner();
+            //Switch Players changes _currentPlayer to the other people, assuming no one has won yet
             SwitchPlayers();
             
         }
